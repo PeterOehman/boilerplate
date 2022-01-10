@@ -1,6 +1,11 @@
 import { createStore, applyMiddleware } from 'redux'
-import 
+import dummyReducer from './dummyReducer'
+import thunkMiddleware from 'redux-thunk'
+import { createLogger } from 'redux-logger'
 
-dummyReducer = (state = {}, aciton) {
-  return state
-}
+const store = createStore(
+  dummyReducer,
+  applyMiddleware(thunkMiddleware, createLogger)
+)
+
+export default store

@@ -1,4 +1,5 @@
 module.exports = {
+  mode: 'development',
   entry: [
     './client/app.js'
   ],
@@ -11,13 +12,20 @@ module.exports = {
     rules: [
       {
         test: /\.jsx?$/,
-        exclude: /node_modules/,
+        exclude: /(node_modules|bower_components)/,
         loader: 'babel-loader',
         options: {
           presets: [
             '@babel/preset-react'
           ]
         }
+      },
+      {
+        test: /\.css$/,
+        use: [
+          'style-loader',
+          'css-loader'
+        ]
       }
     ]
   }
