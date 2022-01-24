@@ -4,7 +4,8 @@
   "description": "",
   "main": "server/express.js",
   "scripts": {
-    "start": "webpack -w & nodemon express.js"
+    "start": "webpack -w & nodemon express.js",
+    "seed": "node server/seed"
   },
   "repository": {
     "type": "git",
@@ -17,6 +18,7 @@
   },
   "homepage": "https://github.com/PeterOehman/boilerplate#readme",
   "dependencies": {
+    "axios": "^0.24.0",
     "bcrypt": "^5.0.1",
     "express": "^4.17.2",
     "jsonwebtoken": "^8.5.1",

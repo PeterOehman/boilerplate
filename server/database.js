@@ -11,6 +11,7 @@ const User = db.define('user', {
   username: {
     type: Sequelize.STRING,
     allowNull: false,
+    unique: true,
     validate: {
       notEmpty: true,
     }
@@ -18,7 +19,6 @@ const User = db.define('user', {
   password: {
     type: Sequelize.STRING,
     allowNull: false,
-    unique: true,
     validate: {
       notEmpty: true
     }
@@ -32,7 +32,10 @@ module.exports = {
   }
 }
 
-User.beforeCreate(async (user) => user.password = await bcrypt.hash(user.password, 5))
+User.beforeCreate(async (user) => {
+  db.sync()
+  user.password = await bcrypt.hash(user.password, 5)
+})
 
 User.authenticate = async function({username, password}) {
   const user = await this.findOne({where: {username}})

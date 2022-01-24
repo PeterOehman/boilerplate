@@ -14,10 +14,27 @@ app.use('/api', require('./apiRoutes'))
 
 app.post('/login', async (req, res, next) => {
   try {
-  let username = req.body.username
-  let password = req.body.password
-  res.send(await User.authenticate({username, password}))
+    const username = req.body.username
+    const password = req.body.password
+    res.send({token: await User.authenticate({username, password})})
   } catch (err) {
+    next(err)
+  }
+})
+
+app.post('/signup', async (req, res, next) => {
+  try {
+    const username = req.body.username;
+    const password = req.body.password
+    await User.create({
+      username,
+      password
+    })
+    res.send({token: await User.authenticate({username, password})})
+  } catch(err) {
+    if (err.name === 'SequelizeUniqueConstraintError') {
+      res.status(401).send('User already exists')
+    }
     next(err)
   }
 })
