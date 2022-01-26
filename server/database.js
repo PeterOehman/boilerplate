@@ -33,11 +33,16 @@ module.exports = {
 }
 
 User.beforeCreate(async (user) => {
-  db.sync()
-  user.password = await bcrypt.hash(user.password, 5)
+  try {
+    db.sync()
+    user.password = await bcrypt.hash(user.password, 5)
+  } catch (error) {
+    console.error(error)
+  }
 })
 
 User.authenticate = async function({username, password}) {
+  try {
   const user = await this.findOne({where: {username}})
   if (!user || !(await bcrypt.compare(password, user.password))) {
     const error = Error('Incorrect username/password')
@@ -45,6 +50,9 @@ User.authenticate = async function({username, password}) {
     throw error
   }
   return jwt.sign({ id: user.id}, process.env.JWT)
+} catch(error) {
+  console.error(error)
+}
 }
 
 User.findByToken = async function(token) {
